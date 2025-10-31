@@ -1,0 +1,1096 @@
+/**
+ * Responsive Admin Styles for ShipSync
+ * Uses WordPress admin design tokens and patterns
+ */
+
+/* WordPress Admin Color Variables */
+:root {
+    --wp-admin-theme-color: #2271b1;
+    --wp-admin-theme-color-darker-10: #135e96;
+    --wp-admin-theme-color-darker-20: #0a4b78;
+    --wp-admin-border-width-focus: 2px;
+    --wp-components-color-accent: #2271b1;
+    --wp-components-color-accent-darker-10: #135e96;
+}
+
+/* Responsive Dashboard Container */
+.shipsync-admin-wrapper {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+/* Wrap container for all admin pages */
+.wrap {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+/* Page Title Responsive */
+.shipsync-page-title,
+h1.wp-heading-inline {
+    font-size: 23px;
+    font-weight: 400;
+    margin: 0;
+    padding: 9px 0 4px 0;
+    line-height: 1.3;
+    color: #1d2327;
+}
+
+.shipsync-page-title .dashicons {
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+.page-title-action {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 4px 8px;
+    position: relative;
+    top: -3px;
+    text-decoration: none;
+    border: 1px solid #2271b1;
+    border-radius: 2px;
+    text-shadow: none;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #2271b1;
+    background: #f6f7f7;
+    cursor: pointer;
+}
+
+.page-title-action:hover {
+    background: #2271b1;
+    color: #fff;
+}
+
+/* Responsive Stats Cards */
+.shipsync-stats-cards,
+.ocm-stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.shipsync-stat-card,
+.ocm-stat-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.shipsync-stat-card:hover,
+.ocm-stat-card:hover {
+    border-color: var(--wp-admin-theme-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Search Bar */
+.shipsync-search-bar,
+.ocm-search-bar {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    padding: 12px;
+    margin: 15px 0;
+}
+
+.shipsync-search-input,
+.ocm-search-input {
+    width: 100%;
+    max-width: 100%;
+    padding: 6px 8px;
+    font-size: 14px;
+    border: 1px solid #8c8f94;
+    border-radius: 2px;
+    margin-bottom: 8px;
+}
+
+.shipsync-search-bar form,
+.ocm-search-bar form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Responsive Status Tabs */
+.shipsync-status-tabs,
+.ocm-status-tabs {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+}
+
+.shipsync-tab,
+.ocm-tab {
+    padding: 6px 12px;
+    text-decoration: none;
+    color: #2c3338;
+    border-radius: 2px;
+    transition: all 0.15s ease-in-out;
+    font-weight: 500;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.shipsync-tab:hover,
+.ocm-tab:hover {
+    background: #f0f0f1;
+    color: var(--wp-admin-theme-color);
+}
+
+.shipsync-tab.active,
+.ocm-tab.active {
+    background: var(--wp-admin-theme-color);
+    color: #fff;
+}
+
+/* Responsive Tables */
+.shipsync-table-container,
+.ocm-orders-table-container {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.shipsync-table-container table,
+.ocm-orders-table-container table {
+    margin: 0;
+    border: none;
+    width: 100%;
+    min-width: 800px; /* Minimum width for table content */
+}
+
+.shipsync-table-container th,
+.ocm-orders-table-container th {
+    background: #f6f7f7;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #50575e;
+    padding: 10px;
+    white-space: nowrap;
+}
+
+.shipsync-table-container td,
+.ocm-orders-table-container td {
+    padding: 10px;
+    vertical-align: middle;
+    font-size: 13px;
+}
+
+/* Action Buttons Responsive */
+.shipsync-action-buttons,
+.ocm-action-buttons {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.shipsync-action-btn,
+.ocm-action-btn,
+.ocm-copy-order,
+.ocm-whatsapp-order {
+    min-width: 32px;
+    height: 32px;
+    padding: 6px;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    background: #f6f7f7;
+    color: #2c3338;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.15s ease-in-out;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1;
+    margin: 0;
+    outline: none;
+}
+
+/* Reset button-specific styles */
+.ocm-copy-order,
+.ocm-whatsapp-order {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-shadow: none;
+    box-shadow: none;
+}
+
+.shipsync-action-btn .dashicons,
+.ocm-action-btn .dashicons,
+.ocm-copy-order .dashicons,
+.ocm-whatsapp-order .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #2c3338;
+}
+
+.shipsync-action-btn:hover,
+.ocm-action-btn:hover {
+    background: var(--wp-admin-theme-color);
+    border-color: var(--wp-admin-theme-color);
+    color: #fff;
+}
+
+.shipsync-action-btn:hover .dashicons,
+.ocm-action-btn:hover .dashicons {
+    color: #fff;
+}
+
+.ocm-copy-order:hover {
+    background: var(--wp-admin-theme-color);
+    border-color: var(--wp-admin-theme-color);
+}
+
+.ocm-copy-order:hover .dashicons {
+    color: #fff;
+}
+
+.ocm-whatsapp-order:hover {
+    background: #25D366;
+    border-color: #25D366;
+}
+
+.ocm-whatsapp-order:hover .dashicons {
+    color: #fff;
+}
+
+/* Tracking code clickable styles */
+.ocm-tracking-code[data-tracking-url] {
+    cursor: pointer;
+}
+
+.ocm-tracking-code[data-tracking-url]:hover {
+    background: #e7f5ff !important;
+    border: 1px solid #2271b1;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(34, 113, 177, 0.2);
+}
+
+.ocm-tracking-code[data-tracking-url] + .dashicons {
+    transition: all 0.2s;
+}
+
+.ocm-tracking-code[data-tracking-url] + .dashicons:hover {
+    color: #00a32a !important;
+    transform: scale(1.2);
+}
+
+/* Responsive Forms */
+.shipsync-form-section,
+.ocm-form-section {
+    margin: 20px 0;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+}
+
+.shipsync-form-row,
+.ocm-form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.shipsync-form-group,
+.ocm-form-group {
+    flex: 1;
+    margin-bottom: 16px;
+}
+
+/* Settings Page Responsive */
+.shipsync-settings-wrap {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.shipsync-settings-section {
+    margin-bottom: 20px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.shipsync-section-header {
+    padding: 16px 20px;
+    background: #f6f7f7;
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.shipsync-section-header h2 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.shipsync-section-header .description {
+    margin: 0;
+    color: #646970;
+    font-size: 13px;
+}
+
+.shipsync-settings-section .form-table {
+    margin: 0;
+    width: 100%;
+}
+
+.shipsync-settings-section .form-table th {
+    width: 200px;
+    padding: 15px 20px;
+    font-weight: 600;
+    vertical-align: top;
+}
+
+.shipsync-settings-section .form-table td {
+    padding: 15px 20px;
+}
+
+.shipsync-settings-section .form-table td .description {
+    margin-top: 6px;
+    margin-bottom: 0;
+}
+
+/* Tab Navigation Responsive */
+.nav-tab-wrapper {
+    border-bottom: 1px solid #c3c4c7;
+    margin: 15px 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+.nav-tab {
+    padding: 8px 16px;
+    margin-bottom: -1px;
+    margin-right: 0;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: transparent;
+    color: #646970;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    transition: all 0.15s ease-in-out;
+}
+
+.nav-tab:hover {
+    color: var(--wp-admin-theme-color);
+    background: #f6f7f7;
+}
+
+.nav-tab-active {
+    border-color: #c3c4c7;
+    border-bottom-color: #fff;
+    background: #fff;
+    color: var(--wp-admin-theme-color);
+    margin-bottom: -1px;
+}
+
+/* Test Connection Card */
+.shipsync-test-connection-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    padding: 16px;
+    margin-top: 15px;
+}
+
+.shipsync-test-result {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 2px;
+    font-size: 13px;
+}
+
+.shipsync-test-result.success {
+    background: #d1f2eb;
+    color: #0f5132;
+    border: 1px solid #a3cfbb;
+}
+
+.shipsync-test-result.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f1aeb5;
+}
+
+.shipsync-test-result .dashicons {
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+/* Save Actions */
+.shipsync-save-actions {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #c3c4c7;
+}
+
+/* Admin Notices */
+.ocm-admin-notice {
+    margin: 15px 0;
+}
+
+.ocm-admin-notice .dashicons {
+    vertical-align: middle;
+}
+
+/* Responsive Pagination */
+.shipsync-pagination,
+.ocm-pagination {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    padding: 12px;
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.shipsync-pagination .page-numbers,
+.ocm-pagination .page-numbers {
+    padding: 6px 10px;
+    margin: 2px;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    text-decoration: none;
+    color: var(--wp-admin-theme-color);
+    font-size: 13px;
+}
+
+.shipsync-pagination .page-numbers:hover,
+.ocm-pagination .page-numbers:hover {
+    background: #f0f0f1;
+}
+
+.shipsync-pagination .page-numbers.current,
+.ocm-pagination .page-numbers.current {
+    background: var(--wp-admin-theme-color);
+    color: #fff;
+    border-color: var(--wp-admin-theme-color);
+}
+
+/* Status Badges */
+.shipsync-status-badge,
+.ocm-status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status-delivered {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-hold {
+    background: #e2d9f3;
+    color: #6f42c1;
+}
+
+.status-in-review {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-processing {
+    background: #cce5ff;
+    color: #004085;
+}
+
+/* Responsive Modal */
+.shipsync-modal,
+.ocm-modal,
+.ocm-courier-modal {
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.shipsync-modal-content,
+.ocm-modal-content,
+.ocm-courier-modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ocm-courier-modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #c3c4c7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f6f7f7;
+}
+
+.ocm-courier-modal-header h3 {
+    margin: 0;
+    color: #1d2327;
+    font-size: 16px;
+}
+
+.ocm-courier-modal-close {
+    font-size: 24px;
+    font-weight: bold;
+    color: #646970;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+}
+
+.ocm-courier-modal-close:hover {
+    color: #1d2327;
+}
+
+.ocm-courier-modal-body {
+    padding: 20px;
+}
+
+.ocm-courier-option {
+    padding: 12px;
+    margin-bottom: 8px;
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.ocm-courier-option:hover {
+    border-color: var(--wp-admin-theme-color);
+    background: #f0f6fc;
+}
+
+.ocm-courier-option input[type="radio"] {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.ocm-courier-option label {
+    margin: 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1d2327;
+}
+
+.ocm-courier-modal-footer {
+    padding: 12px 20px;
+    border-top: 1px solid #c3c4c7;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    background: #f6f7f7;
+}
+
+/* Mobile First - Tablet and Below (768px) */
+@media screen and (max-width: 782px) {
+    /* Stats Cards - 2 columns on tablet */
+    .shipsync-stats-cards,
+    .ocm-stats-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* Search Bar */
+    .shipsync-search-bar form,
+    .ocm-search-bar form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .shipsync-search-input,
+    .ocm-search-input {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+
+    .shipsync-search-bar button,
+    .ocm-search-bar button {
+        width: 100%;
+    }
+
+    /* Status Tabs */
+    .shipsync-status-tabs,
+    .ocm-status-tabs {
+        flex-wrap: wrap;
+    }
+
+    .shipsync-tab,
+    .ocm-tab {
+        flex: 1 1 auto;
+        min-width: calc(50% - 4px);
+        text-align: center;
+    }
+
+    /* Tables - Enable horizontal scroll */
+    .shipsync-table-container,
+    .ocm-orders-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Action Buttons */
+    .shipsync-action-buttons,
+    .ocm-action-buttons {
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    /* Forms */
+    .shipsync-form-row,
+    .ocm-form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .shipsync-form-group,
+    .ocm-form-group {
+        margin-bottom: 16px;
+    }
+
+    /* Settings */
+    .shipsync-settings-section .form-table th {
+        width: 100%;
+        display: block;
+        padding: 10px 15px;
+    }
+
+    .shipsync-settings-section .form-table td {
+        padding: 10px 15px;
+        display: block;
+    }
+
+    /* Pagination */
+    .shipsync-pagination,
+    .ocm-pagination {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .shipsync-pagination select,
+    .ocm-pagination select {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Modal */
+    .shipsync-modal-content,
+    .ocm-modal-content,
+    .ocm-courier-modal-content {
+        width: 95%;
+        margin: 10% auto;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+}
+
+/* Mobile - Small Screens (480px and below) */
+@media screen and (max-width: 480px) {
+    /* Stats Cards - Single column on mobile */
+    .shipsync-stats-cards,
+    .ocm-stats-cards {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .shipsync-stat-card,
+    .ocm-stat-card {
+        padding: 12px;
+    }
+
+    .shipsync-stat-value,
+    .ocm-stat-value {
+        font-size: 28px;
+    }
+
+    /* Status Tabs - Full width on mobile */
+    .shipsync-tab,
+    .ocm-tab {
+        min-width: 100%;
+        flex: 1 1 100%;
+    }
+
+    /* Action Buttons - Stack on mobile */
+    .shipsync-action-buttons,
+    .ocm-action-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .shipsync-action-btn,
+    .ocm-action-btn,
+    .ocm-copy-order,
+    .ocm-whatsapp-order {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Dashboard padding */
+    .shipsync-admin-wrapper,
+    .ocm-orders-dashboard,
+    .ocm-courier-orders-dashboard {
+        padding: 12px;
+        margin: -10px -10px -10px -10px;
+    }
+
+    /* Settings sections */
+    .shipsync-settings-section {
+        margin-bottom: 15px;
+    }
+
+    .shipsync-section-header {
+        padding: 12px 15px;
+    }
+
+    .shipsync-section-header h2 {
+        font-size: 15px;
+    }
+
+    .shipsync-settings-section .form-table {
+        display: block;
+    }
+
+    .shipsync-settings-section .form-table tbody,
+    .shipsync-settings-section .form-table tr {
+        display: block;
+    }
+
+    .shipsync-settings-section .form-table th,
+    .shipsync-settings-section .form-table td {
+        display: block;
+        width: 100%;
+        padding: 12px 15px;
+        border-bottom: 1px solid #c3c4c7;
+    }
+
+    .shipsync-settings-section .form-table th {
+        background: #f6f7f7;
+        font-size: 14px;
+        padding-bottom: 8px;
+    }
+
+    .shipsync-settings-section .form-table td {
+        padding-top: 8px;
+        padding-bottom: 16px;
+    }
+
+    .shipsync-settings-section .form-table tr:last-child th,
+    .shipsync-settings-section .form-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Tab Navigation Mobile */
+    .nav-tab-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+        margin-left: -12px;
+        margin-right: -12px;
+        padding: 0 12px;
+    }
+
+    .nav-tab {
+        flex-shrink: 0;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    /* Modal on mobile */
+    .shipsync-modal-content,
+    .ocm-modal-content,
+    .ocm-courier-modal-content {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        max-height: 100vh;
+        height: 100vh;
+    }
+
+    .ocm-courier-modal-header,
+    .ocm-courier-modal-body,
+    .ocm-courier-modal-footer {
+        padding: 12px 16px;
+    }
+
+    .ocm-courier-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .ocm-courier-modal-footer .button {
+        width: 100%;
+        margin: 0;
+    }
+
+    /* Page titles */
+    .shipsync-page-title,
+    h1.wp-heading-inline {
+        font-size: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .shipsync-page-title .dashicons {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+    }
+
+    .page-title-action {
+        display: block;
+        margin-top: 10px;
+        margin-left: 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    /* Description text */
+    .description {
+        font-size: 13px;
+    }
+}
+
+/* WordPress Admin Color Scheme Support */
+.admin-color-fresh .shipsync-tab.active,
+.admin-color-fresh .ocm-tab.active {
+    background: #2271b1;
+}
+
+.admin-color-light .shipsync-tab.active,
+.admin-color-light .ocm-tab.active {
+    background: #0085ba;
+}
+
+.admin-color-modern .shipsync-tab.active,
+.admin-color-modern .ocm-tab.active {
+    background: #3858e9;
+}
+
+.admin-color-blue .shipsync-tab.active,
+.admin-color-blue .ocm-tab.active {
+    background: #096484;
+}
+
+.admin-color-coffee .shipsync-tab.active,
+.admin-color-coffee .ocm-tab.active {
+    background: #46403c;
+}
+
+.admin-color-ectoplasm .shipsync-tab.active,
+.admin-color-ectoplasm .ocm-tab.active {
+    background: #523f6d;
+}
+
+.admin-color-midnight .shipsync-tab.active,
+.admin-color-midnight .ocm-tab.active {
+    background: #e14d43;
+}
+
+.admin-color-ocean .shipsync-tab.active,
+.admin-color-ocean .ocm-tab.active {
+    background: #627c83;
+}
+
+.admin-color-sunrise .shipsync-tab.active,
+.admin-color-sunrise .ocm-tab.active {
+    background: #dd823b;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .shipsync-stat-card,
+    .ocm-stat-card,
+    .shipsync-search-bar,
+    .ocm-search-bar {
+        border-width: 2px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .shipsync-stat-card,
+    .ocm-stat-card,
+    .shipsync-tab,
+    .ocm-tab,
+    .shipsync-action-btn,
+    .ocm-action-btn {
+        transition: none;
+    }
+}
+
+/* Sticky Footer Styles */
+.wrap {
+    position: relative;
+    min-height: calc(100vh - 100px);
+    padding-bottom: 80px;
+    box-sizing: border-box;
+}
+
+.shipsync-admin-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 15px 20px;
+    border-top: 1px solid #c3c4c7;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 13px;
+    color: #646970;
+    box-sizing: border-box;
+    z-index: 10;
+    box-shadow: 0 -1px 0 #c3c4c7;
+}
+
+.shipsync-footer-left {
+    flex: 1;
+    min-width: 200px;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow: visible;
+}
+
+.shipsync-footer-left a {
+    text-decoration: none;
+    color: #2271b1;
+    font-weight: 600;
+    margin-left: 2px;
+    white-space: nowrap;
+}
+
+.shipsync-footer-left a:hover {
+    color: #135e96;
+}
+
+.shipsync-footer-right {
+    color: #646970;
+    font-size: 13px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: fit-content;
+    overflow: visible;
+}
+
+/* Footer is already within #wpcontent, so no adjustment needed for menu */
+
+/* Responsive footer adjustments */
+@media (max-width: 782px) {
+    .shipsync-admin-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 15px;
+    }
+
+    .shipsync-footer-left,
+    .shipsync-footer-right {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .shipsync-footer-right {
+        text-align: left;
+        margin-top: 5px;
+    }
+}
+
+/* Adjust for mobile admin */
+@media screen and (max-width: 600px) {
+    .shipsync-admin-footer {
+        padding: 10px 12px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .shipsync-admin-footer,
+    .shipsync-action-buttons,
+    .ocm-action-buttons,
+    .shipsync-status-tabs,
+    .ocm-status-tabs,
+    .shipsync-search-bar,
+    .ocm-search-bar {
+        display: none;
+    }
+
+    .shipsync-table-container,
+    .ocm-orders-table-container {
+        overflow: visible;
+    }
+
+    .shipsync-table-container table,
+    .ocm-orders-table-container table {
+        min-width: auto;
+    }
+}
+

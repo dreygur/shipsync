@@ -1,0 +1,423 @@
+/**
+ * Frontend styles for Order & Courier Manager
+ */
+
+/* Order Card Widget Styles */
+.ocm-order-card-widget {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.ocm-widget-title {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #0073aa;
+  padding-bottom: 10px;
+}
+
+.ocm-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ocm-order-item {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 15px;
+  transition: all 0.3s ease;
+}
+
+.ocm-order-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.ocm-order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.ocm-order-number {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0073aa;
+}
+
+.ocm-order-total {
+  font-size: 16px;
+  font-weight: 600;
+  color: #28a745;
+  background: #d4edda;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.ocm-order-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ocm-customer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ocm-customer-info strong {
+  font-size: 16px;
+  color: #333;
+}
+
+.ocm-customer-email {
+  font-size: 14px;
+  color: #666;
+}
+
+.ocm-order-status {
+  margin: 8px 0;
+}
+
+.ocm-status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.status-confirmed {
+  background: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+.status-preparing {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f1aeb5;
+}
+
+.status-ready {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status-in_progress {
+  background: #cce5ff;
+  color: #004085;
+  border: 1px solid #b3d7ff;
+}
+
+.status-delivered {
+  background: #d1f2eb;
+  color: #0f5132;
+  border: 1px solid #a3cfbb;
+}
+
+.status-cancelled {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f1aeb5;
+}
+
+.ocm-courier-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.ocm-courier-label {
+  color: #666;
+  font-weight: 500;
+}
+
+.ocm-courier-name {
+  color: #333;
+  font-weight: 600;
+}
+
+.ocm-order-date {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+}
+
+.ocm-widget-footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #dee2e6;
+  text-align: center;
+}
+
+.ocm-view-all-btn {
+  display: inline-block;
+  background: #0073aa;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.ocm-view-all-btn:hover {
+  background: #005a87;
+  color: #fff;
+  text-decoration: none;
+}
+
+.ocm-no-orders {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.ocm-no-orders p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Order Tracking Styles */
+.ocm-track-order {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  max-width: 500px;
+}
+
+.ocm-track-order h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.ocm-track-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ocm-track-form input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.ocm-track-form button {
+  background: #0073aa;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.ocm-track-form button:hover {
+  background: #005a87;
+}
+
+.ocm-track-result {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  display: none;
+}
+
+.ocm-track-result.show {
+  display: block;
+}
+
+.ocm-track-error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f1aeb5;
+}
+
+.ocm-track-success {
+  background: #d1f2eb;
+  color: #0f5132;
+  border: 1px solid #a3cfbb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .ocm-order-card-widget {
+    padding: 15px;
+    margin: 15px 0;
+  }
+
+  .ocm-widget-title {
+    font-size: 20px;
+  }
+
+  .ocm-order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .ocm-order-number {
+    font-size: 16px;
+  }
+
+  .ocm-order-total {
+    font-size: 14px;
+  }
+
+  .ocm-courier-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .ocm-track-form {
+    flex-direction: column;
+  }
+
+  .ocm-view-all-btn {
+    display: block;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .ocm-order-card-widget {
+    padding: 12px;
+  }
+
+  .ocm-order-item {
+    padding: 12px;
+  }
+
+  .ocm-widget-title {
+    font-size: 18px;
+  }
+}
+
+/* Animation Effects */
+.ocm-order-item {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading States */
+.ocm-loading {
+  position: relative;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.ocm-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #0073aa;
+  border-radius: 50%;
+  animation: ocm-spin 1s linear infinite;
+}
+
+@keyframes ocm-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .ocm-order-card-widget {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+
+  .ocm-widget-title {
+    color: #e2e8f0;
+    border-bottom-color: #4299e1;
+  }
+
+  .ocm-order-item {
+    background: #4a5568;
+    border-color: #718096;
+  }
+
+  .ocm-order-number {
+    color: #4299e1;
+  }
+
+  .ocm-customer-info strong {
+    color: #e2e8f0;
+  }
+
+  .ocm-customer-email {
+    color: #a0aec0;
+  }
+
+  .ocm-courier-label {
+    color: #a0aec0;
+  }
+
+  .ocm-courier-name {
+    color: #e2e8f0;
+  }
+
+  .ocm-order-date {
+    color: #a0aec0;
+  }
+
+  .ocm-view-all-btn {
+    background: #4299e1;
+  }
+
+  .ocm-view-all-btn:hover {
+    background: #3182ce;
+  }
+}

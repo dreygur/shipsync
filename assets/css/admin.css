@@ -1,0 +1,380 @@
+/**
+ * Admin styles for Order & Courier Manager
+ */
+
+/* General Admin Styles */
+.ocm-admin-header {
+  margin: 20px 0;
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.ocm-form {
+  max-width: 800px;
+}
+
+.ocm-form-section {
+  margin: 30px 0;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.ocm-form-section h3 {
+  margin-top: 0;
+  color: #23282d;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.ocm-form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.ocm-form-group {
+  flex: 1;
+  margin-bottom: 15px;
+}
+
+.ocm-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #23282d;
+}
+
+.ocm-form-group .required {
+  color: #d63638;
+}
+
+.ocm-form-group input,
+.ocm-form-group select,
+.ocm-form-group textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.ocm-form-group input:focus,
+.ocm-form-group select:focus,
+.ocm-form-group textarea:focus {
+  border-color: #0073aa;
+  box-shadow: 0 0 0 1px #0073aa;
+  outline: none;
+}
+
+.ocm-form-actions {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+/* Orders Table Styles */
+.ocm-orders-container {
+  margin-top: 20px;
+}
+
+.ocm-orders-container table {
+  margin-top: 0;
+}
+
+.customer-info {
+  line-height: 1.4;
+}
+
+.customer-info small {
+  color: #666;
+  display: block;
+}
+
+.order-status {
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-confirmed {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-preparing {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-ready {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-in_progress {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.status-delivered {
+  background: #d1f2eb;
+  color: #0f5132;
+}
+
+.status-cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.no-courier {
+  color: #999;
+  font-style: italic;
+}
+
+.order-actions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.order-actions .button {
+  font-size: 11px;
+  padding: 2px 8px;
+  height: auto;
+  line-height: 1.4;
+}
+
+/* Couriers Table Styles */
+.ocm-couriers-container {
+  margin-top: 20px;
+}
+
+.courier-status {
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-active {
+  background: #d1f2eb;
+  color: #0f5132;
+}
+
+.status-inactive {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-suspended {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.courier-actions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.courier-actions .button {
+  font-size: 11px;
+  padding: 2px 8px;
+  height: auto;
+  line-height: 1.4;
+}
+
+/* Modal Styles */
+.ocm-modal {
+  position: fixed;
+  z-index: 100000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ocm-modal-content {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.ocm-modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ocm-modal-header h3 {
+  margin: 0;
+  color: #23282d;
+}
+
+.ocm-modal-close {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #666;
+  line-height: 1;
+}
+
+.ocm-modal-close:hover {
+  color: #000;
+}
+
+.ocm-modal-body {
+  padding: 20px;
+}
+
+.ocm-modal-body .form-group {
+  margin-bottom: 20px;
+}
+
+.ocm-modal-body .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #23282d;
+}
+
+.ocm-modal-body .form-group input,
+.ocm-modal-body .form-group select,
+.ocm-modal-body .form-group textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+/* Order Items Styles */
+.order-item {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background: #f9f9f9;
+}
+
+.order-item .ocm-form-row {
+  margin-bottom: 0;
+}
+
+.remove-item {
+  background: #d63638;
+  color: #fff;
+  border-color: #d63638;
+}
+
+.remove-item:hover {
+  background: #b32d2e;
+  border-color: #b32d2e;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .ocm-form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .order-actions,
+  .courier-actions {
+    flex-direction: column;
+  }
+
+  .ocm-modal-content {
+    width: 95%;
+    margin: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+}
+
+/* Loading States */
+.ocm-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.ocm-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #0073aa;
+  border-radius: 50%;
+  animation: ocm-spin 1s linear infinite;
+}
+
+@keyframes ocm-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Success/Error Messages */
+.ocm-message {
+  padding: 12px 15px;
+  margin: 15px 0;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.ocm-message.success {
+  background: #d1f2eb;
+  color: #0f5132;
+  border: 1px solid #a3cfbb;
+}
+
+.ocm-message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f1aeb5;
+}
+
+.ocm-message.info {
+  background: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}

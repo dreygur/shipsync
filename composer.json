@@ -1,0 +1,38 @@
+{
+  "name": "yeasir/shipsync",
+  "description": "Bangladesh courier integration for WooCommerce. Track deliveries with Steadfast, Pathao, RedX and other local courier services.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "version": "2.0.0",
+  "author": "Rakibul Yeasin",
+  "author_email": "ryeasin03@gmail.com",
+  "author_url": "https://example.com",
+  "license_url": "https://www.gnu.org/licenses/gpl-2.0.html",
+  "text_domain": "shipsync",
+  "domain_path": "/languages",
+  "requires_at_least": "5.0",
+  "tested_up_to": "6.4",
+  "requires_php": "7.4",
+  "autoload": {
+    "classmap": [
+      "includes/"
+    ]
+  },
+  "authors": [
+    {
+      "name": "Rakibul Yeasin",
+      "email": "ryeasin03@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "afragen/wp-dependency-installer": "^4.3"
+  },
+  "require-dev": {
+    "php-stubs/wordpress-stubs": "^6.8.3"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}

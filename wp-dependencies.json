@@ -1,0 +1,26 @@
+[
+  {
+    "name": "WooCommerce",
+    "host": "wordpress",
+    "slug": "woocommerce/woocommerce.php",
+    "uri": "https://wordpress.org/plugins/woocommerce/",
+    "required": true,
+    "version": "5.0"
+  },
+  {
+    "name": "SteadFast API",
+    "host": "wordpress",
+    "slug": "steadfast-api/steadfast-api.php",
+    "uri": "https://wordpress.org/plugins/steadfast-api/",
+    "required": false,
+    "version": "1.0.2"
+  },
+  {
+    "name": "RedX for WooCommerce",
+    "host": "wordpress",
+    "slug": "redx-for-woocommerce/redex-tracking-for-woocommerce.php",
+    "uri": "https://wordpress.org/plugins/redx-for-woocommerce/",
+    "required": false,
+    "version": "1.0.1"
+  }
+]

@@ -1,0 +1,45 @@
+# WordPress
+wp-config.php
+.htaccess
+
+# Vendor dependencies
+/vendor/
+/node_modules/
+
+# Composer
+composer.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+error_log
+
+# Environment
+.env
+.env.local
+
+# Build files
+*.zip
+*.tar.gz
+*.tar
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Plugin specific
+# Don't ignore bundled plugins if they're part of the repo
+# courier-woocommerce-plugin-main/
+
