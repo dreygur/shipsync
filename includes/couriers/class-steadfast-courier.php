@@ -9,7 +9,6 @@ if (!defined('ABSPATH')) {
 }
 
 require_once SHIPSYNC_PLUGIN_PATH . 'includes/couriers/abstract-courier.php';
-require_once SHIPSYNC_PLUGIN_PATH . 'includes/couriers/class-steadfast-api-wrapper.php';
 
 class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
 
@@ -31,7 +30,7 @@ class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
      * Check if steadfast-api plugin is available and show notice if needed
      */
     private function check_plugin_dependency() {
-        if (class_exists('ShipSync_Steadfast_API_Wrapper') && !ShipSync_Steadfast_API_Wrapper::is_plugin_active()) {
+        if (!self::is_plugin_active()) {
             // Plugin not active, but we can still work with direct API calls
             add_action('admin_notices', array($this, 'plugin_dependency_notice'));
         }
@@ -41,7 +40,7 @@ class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
      * Show admin notice about plugin dependency
      */
     public function plugin_dependency_notice() {
-        if (current_user_can('manage_options') && class_exists('ShipSync_Steadfast_API_Wrapper') && !ShipSync_Steadfast_API_Wrapper::is_plugin_active()) {
+        if (current_user_can('manage_options') && !self::is_plugin_active()) {
             $plugin_file = 'steadfast-api/steadfast-api.php';
             $install_url = wp_nonce_url(
                 self_admin_url('update.php?action=install-plugin&plugin=steadfast-api'),
@@ -72,7 +71,7 @@ class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
         );
 
         // If steadfast-api plugin is active and configured, use its credentials (no need for duplicate fields)
-        if (ShipSync_Steadfast_API_Wrapper::is_plugin_active() && ShipSync_Steadfast_API_Wrapper::is_configured()) {
+        if (self::is_plugin_active() && self::is_plugin_configured()) {
             // Plugin is available and configured - use its credentials automatically
             // No need to show duplicate credential fields
             $fields['plugin_info'] = array(
@@ -142,8 +141,8 @@ class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
         $secret_key = '';
 
         // First priority: Use plugin credentials if plugin is active and configured
-        if (ShipSync_Steadfast_API_Wrapper::is_plugin_active() && ShipSync_Steadfast_API_Wrapper::is_configured()) {
-            $plugin_creds = ShipSync_Steadfast_API_Wrapper::get_credentials();
+        if (self::is_plugin_active() && self::is_plugin_configured()) {
+            $plugin_creds = self::get_plugin_credentials();
             if (!empty($plugin_creds['api_key']) && !empty($plugin_creds['secret_key'])) {
                 $api_key = $plugin_creds['api_key'];
                 $secret_key = $plugin_creds['secret_key'];
@@ -179,7 +178,7 @@ class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
 
         // If steadfast-api plugin is active and configured, use it automatically
         // Priority: Plugin credentials > ShipSync settings
-        $use_plugin = ShipSync_Steadfast_API_Wrapper::is_plugin_active() && ShipSync_Steadfast_API_Wrapper::is_configured();
+        $use_plugin = self::is_plugin_active() && self::is_plugin_configured();
 
         // If plugin credentials are available, prefer them (unless explicitly overridden in ShipSync settings)
         if (!$use_plugin) {
@@ -189,7 +188,7 @@ class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
 
         if ($use_plugin) {
             // Use the wrapper which uses the plugin's API
-            $result = ShipSync_Steadfast_API_Wrapper::create_order($order, $params);
+            $result = self::create_order_via_plugin($order, $params);
 
             if ($result['success']) {
                 // Fire action hooks
@@ -409,8 +408,8 @@ class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
         }
 
         // If using consignment_id and plugin is available, use wrapper automatically
-        if ($type === 'consignment_id' && ShipSync_Steadfast_API_Wrapper::is_plugin_active() && ShipSync_Steadfast_API_Wrapper::is_configured()) {
-            return ShipSync_Steadfast_API_Wrapper::get_status($identifier);
+        if ($type === 'consignment_id' && self::is_plugin_active() && self::is_plugin_configured()) {
+            return self::get_status_via_plugin($identifier);
         }
 
         // Build endpoint based on type
@@ -469,8 +468,8 @@ class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
         }
 
         // If plugin is available and configured, use wrapper automatically
-        if (ShipSync_Steadfast_API_Wrapper::is_plugin_active() && ShipSync_Steadfast_API_Wrapper::is_configured()) {
-            return ShipSync_Steadfast_API_Wrapper::get_balance();
+        if (self::is_plugin_active() && self::is_plugin_configured()) {
+            return self::get_balance_via_plugin();
         }
 
         $response = $this->make_request(
@@ -648,8 +647,8 @@ class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
      */
     private function update_wc_order_status($order, $steadfast_status) {
         // Use wrapper's WooCommerce-compatible status mapping if available
-        if (class_exists('ShipSync_Steadfast_API_Wrapper')) {
-            ShipSync_Steadfast_API_Wrapper::update_wc_order_status($order, $steadfast_status);
+        if (self::is_plugin_active()) {
+            self::update_wc_order_status_via_plugin($order, $steadfast_status);
             return;
         }
 
@@ -672,8 +671,8 @@ class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
      */
     public function validate_credentials() {
         // If plugin is configured, validate through plugin automatically
-        if (ShipSync_Steadfast_API_Wrapper::is_plugin_active() && ShipSync_Steadfast_API_Wrapper::is_configured()) {
-            $result = ShipSync_Steadfast_API_Wrapper::get_balance();
+        if (self::is_plugin_active() && self::is_plugin_configured()) {
+            $result = self::get_balance_via_plugin();
             if ($result['success']) {
                 return true;
             }
@@ -720,5 +719,267 @@ class ShipSync_Steadfast_Courier extends ShipSync_Abstract_Courier {
         }
 
         return $phone;
+    }
+
+    /**
+     * ============================================
+     * API WRAPPER METHODS (Merged from class-steadfast-api-wrapper.php)
+     * ============================================
+     */
+
+    /**
+     * Check if the steadfast-api plugin is active
+     * @return bool
+     */
+    private static function is_plugin_active() {
+        return class_exists('STDF_Courier_Main') && function_exists('send_order_to_steadfast_api');
+    }
+
+    /**
+     * Check if the plugin is configured (has API credentials)
+     * @return bool
+     */
+    private static function is_plugin_configured() {
+        if (!self::is_plugin_active()) {
+            return false;
+        }
+
+        $checkbox = get_option('stdf_settings_tab_checkbox', false);
+        $api_key = get_option('api_settings_tab_api_key', false);
+        $api_secret_key = get_option('api_settings_tab_api_secret_key', false);
+
+        return ($checkbox === 'yes' && !empty($api_key) && !empty($api_secret_key));
+    }
+
+    /**
+     * Get API credentials from the plugin's options
+     * @return array Array with 'api_key' and 'secret_key' keys
+     */
+    private static function get_plugin_credentials() {
+        if (!self::is_plugin_active()) {
+            return array();
+        }
+
+        return array(
+            'api_key' => get_option('api_settings_tab_api_key', ''),
+            'secret_key' => get_option('api_settings_tab_api_secret_key', ''),
+            'enabled' => get_option('stdf_settings_tab_checkbox', false) === 'yes'
+        );
+    }
+
+    /**
+     * Create an order using the steadfast-api plugin
+     * @param WC_Order|int $order WooCommerce order object or order ID
+     * @param array $params Additional parameters
+     * @return array Response array with 'success', 'message', and optionally 'consignment'
+     */
+    private static function create_order_via_plugin($order, $params = array()) {
+        if (!self::is_plugin_active()) {
+            return array(
+                'success' => false,
+                'message' => __('SteadFast API plugin is not active', 'shipsync')
+            );
+        }
+
+        if (!self::is_plugin_configured()) {
+            return array(
+                'success' => false,
+                'message' => __('SteadFast API plugin is not configured. Please set up API credentials.', 'shipsync')
+            );
+        }
+
+        if (is_numeric($order)) {
+            $order = wc_get_order($order);
+        }
+
+        if (!$order || !is_a($order, 'WC_Order')) {
+            return array(
+                'success' => false,
+                'message' => __('Invalid order', 'shipsync')
+            );
+        }
+
+        $order_id = $order->get_id();
+
+        if (isset($params['cod_amount']) && !empty($params['cod_amount'])) {
+            update_post_meta($order_id, 'steadfast_amount', floatval($params['cod_amount']));
+        }
+
+        $result = send_order_to_steadfast_api($order_id);
+
+        if ($result === 'success') {
+            $consignment_id = get_post_meta($order_id, 'steadfast_consignment_id', true);
+            $tracking_code = '';
+            if ($consignment_id) {
+                $status_data = self::get_status_via_plugin($consignment_id);
+                if (!empty($status_data['tracking_code'])) {
+                    $tracking_code = $status_data['tracking_code'];
+                }
+            }
+
+            $order->update_meta_data('_steadfast_consignment_id', $consignment_id);
+            if ($tracking_code) {
+                $order->update_meta_data('_steadfast_tracking_code', $tracking_code);
+            }
+            $order->update_meta_data('_steadfast_is_sent', 'yes');
+            $order->save();
+
+            $order->add_order_note(sprintf(
+                __('Steadfast Consignment Created via Plugin - Consignment ID: %s', 'shipsync'),
+                $consignment_id
+            ));
+
+            return array(
+                'success' => true,
+                'message' => __('Order sent to Steadfast successfully', 'shipsync'),
+                'consignment' => array(
+                    'consignment_id' => $consignment_id,
+                    'tracking_code' => $tracking_code
+                )
+            );
+        } elseif ($result === 'unauthorized') {
+            return array(
+                'success' => false,
+                'message' => __('Unauthorized: Please check your API credentials', 'shipsync')
+            );
+        } else {
+            return array(
+                'success' => false,
+                'message' => sprintf(__('Error: %s', 'shipsync'), $result)
+            );
+        }
+    }
+
+    /**
+     * Get order status by consignment ID via plugin
+     * @param string $consignment_id Steadfast consignment ID
+     * @return array Status data or error message
+     */
+    private static function get_status_via_plugin($consignment_id) {
+        if (!self::is_plugin_active()) {
+            return array(
+                'success' => false,
+                'message' => __('SteadFast API plugin is not active', 'shipsync')
+            );
+        }
+
+        if (!function_exists('stdf_get_status_by_consignment_id')) {
+            return array(
+                'success' => false,
+                'message' => __('SteadFast API plugin function not available', 'shipsync')
+            );
+        }
+
+        $response = stdf_get_status_by_consignment_id($consignment_id);
+
+        if ($response === 'unauthorized') {
+            return array(
+                'success' => false,
+                'message' => __('Unauthorized: Please check your API credentials', 'shipsync')
+            );
+        } elseif ($response === 'failed') {
+            return array(
+                'success' => false,
+                'message' => __('Failed to get status', 'shipsync')
+            );
+        } elseif (is_array($response) && isset($response['status']) && $response['status'] == '200') {
+            return array(
+                'success' => true,
+                'status' => isset($response['delivery_status']) ? $response['delivery_status'] : '',
+                'tracking_code' => isset($response['tracking_code']) ? $response['tracking_code'] : '',
+                'consignment_id' => $consignment_id,
+                'raw' => $response
+            );
+        }
+
+        return array(
+            'success' => false,
+            'message' => __('Unknown error occurred', 'shipsync')
+        );
+    }
+
+    /**
+     * Get current balance via plugin
+     * @return array Balance data or error message
+     */
+    private static function get_balance_via_plugin() {
+        if (!self::is_plugin_active()) {
+            return array(
+                'success' => false,
+                'message' => __('SteadFast API plugin is not active', 'shipsync')
+            );
+        }
+
+        if (!function_exists('stdf_check_current_balance')) {
+            return array(
+                'success' => false,
+                'message' => __('SteadFast API plugin function not available', 'shipsync')
+            );
+        }
+
+        $response = stdf_check_current_balance('check-yes');
+
+        if ($response === 'unauthorized') {
+            return array(
+                'success' => false,
+                'message' => __('Unauthorized: Please check your API credentials', 'shipsync')
+            );
+        } elseif ($response === 'failed') {
+            return array(
+                'success' => false,
+                'message' => __('Failed to get balance', 'shipsync')
+            );
+        } elseif (is_array($response) && isset($response['status']) && $response['status'] == '200') {
+            return array(
+                'success' => true,
+                'balance' => isset($response['current_balance']) ? floatval($response['current_balance']) : 0,
+                'raw' => $response
+            );
+        }
+
+        return array(
+            'success' => false,
+            'message' => __('Unknown error occurred', 'shipsync')
+        );
+    }
+
+    /**
+     * Update order status in WooCommerce based on Steadfast delivery status
+     * @param WC_Order $order WooCommerce order object
+     * @param string $delivery_status Steadfast delivery status
+     * @return void
+     */
+    private static function update_wc_order_status_via_plugin($order, $delivery_status) {
+        if (!$order || !is_a($order, 'WC_Order')) {
+            return;
+        }
+
+        $status_map = array(
+            'delivered' => 'wc-completed',
+            'cancelled' => 'wc-cancelled',
+            'returned' => 'wc-refunded',
+            'pending' => 'wc-processing',
+            'on_hold' => 'wc-on-hold',
+            'in_review' => 'wc-processing',
+            'in_transit' => 'out-shipping',
+        );
+
+        $default_status = 'wc-processing';
+        $wc_status = isset($status_map[strtolower($delivery_status)])
+            ? $status_map[strtolower($delivery_status)]
+            : $default_status;
+
+        $wc_status = str_replace('wc-', '', $wc_status);
+
+        $current_status = $order->get_status();
+        if ($current_status !== $wc_status) {
+            $order->update_status($wc_status, sprintf(
+                __('Steadfast delivery status updated to: %s', 'shipsync'),
+                ucwords(str_replace('_', ' ', $delivery_status))
+            ));
+        }
+
+        $order->update_meta_data('_steadfast_status', $delivery_status);
+        $order->save();
     }
 }

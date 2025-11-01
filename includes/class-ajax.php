@@ -169,7 +169,7 @@ class ShipSync_Ajax {
                 }
             } else {
                 // Multiple couriers - check for default
-                $settings = get_option('ocm_settings', array());
+                $settings = get_option(ShipSync_Options::SETTINGS, array());
                 $default_courier_id = isset($settings['default_courier']) ? $settings['default_courier'] : '';
 
                 if ($default_courier_id && isset($enabled_couriers[$default_courier_id])) {
@@ -239,13 +239,17 @@ class ShipSync_Ajax {
 
     public function send_to_selected_courier() {
         // Verify nonce (accept both old and new nonce names for backward compatibility)
-        if (!wp_verify_nonce($_POST['nonce'], 'shipsync_order_status') && !wp_verify_nonce($_POST['nonce'], 'ocm_order_status')) {
-            wp_die('Security check failed');
+        if (!isset($_POST['nonce']) || (!wp_verify_nonce($_POST['nonce'], 'shipsync_order_status') && !wp_verify_nonce($_POST['nonce'], 'ocm_order_status'))) {
+            wp_send_json_error(array(
+                'message' => __('Security check failed.', 'shipsync')
+            ));
         }
 
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_die('Insufficient permissions');
+            wp_send_json_error(array(
+                'message' => __('Insufficient permissions.', 'shipsync')
+            ));
         }
 
         $order_id = intval($_POST['order_id']);
@@ -303,13 +307,17 @@ class ShipSync_Ajax {
 
     public function assign_courier() {
         // Verify nonce (accept both old and new nonce names for backward compatibility)
-        if (!wp_verify_nonce($_POST['nonce'], 'shipsync_nonce') && !wp_verify_nonce($_POST['nonce'], 'ocm_nonce')) {
-            wp_die('Security check failed');
+        if (!isset($_POST['nonce']) || (!wp_verify_nonce($_POST['nonce'], 'shipsync_nonce') && !wp_verify_nonce($_POST['nonce'], 'ocm_nonce'))) {
+            wp_send_json_error(array(
+                'message' => __('Security check failed.', 'shipsync')
+            ));
         }
 
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_die('Insufficient permissions');
+            wp_send_json_error(array(
+                'message' => __('Insufficient permissions.', 'shipsync')
+            ));
         }
 
         $order_id = intval($_POST['order_id']);
@@ -479,13 +487,17 @@ class ShipSync_Ajax {
 
     public function get_courier_orders() {
         // Verify nonce (accept both old and new nonce names for backward compatibility)
-        if (!wp_verify_nonce($_POST['nonce'], 'shipsync_courier_orders') && !wp_verify_nonce($_POST['nonce'], 'ocm_courier_orders')) {
-            wp_die('Security check failed');
+        if (!isset($_POST['nonce']) || (!wp_verify_nonce($_POST['nonce'], 'shipsync_courier_orders') && !wp_verify_nonce($_POST['nonce'], 'ocm_courier_orders'))) {
+            wp_send_json_error(array(
+                'message' => __('Security check failed.', 'shipsync')
+            ));
         }
 
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_die('Insufficient permissions');
+            wp_send_json_error(array(
+                'message' => __('Insufficient permissions.', 'shipsync')
+            ));
         }
 
         $courier_id = intval($_POST['courier_id']);
@@ -551,13 +563,17 @@ class ShipSync_Ajax {
 
     public function get_courier_data() {
         // Verify nonce (accept both old and new nonce names for backward compatibility)
-        if (!wp_verify_nonce($_POST['nonce'], 'shipsync_get_courier') && !wp_verify_nonce($_POST['nonce'], 'ocm_get_courier')) {
-            wp_die('Security check failed');
+        if (!isset($_POST['nonce']) || (!wp_verify_nonce($_POST['nonce'], 'shipsync_get_courier') && !wp_verify_nonce($_POST['nonce'], 'ocm_get_courier'))) {
+            wp_send_json_error(array(
+                'message' => __('Security check failed.', 'shipsync')
+            ));
         }
 
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_die('Insufficient permissions');
+            wp_send_json_error(array(
+                'message' => __('Insufficient permissions.', 'shipsync')
+            ));
         }
 
         $courier_id = intval($_POST['courier_id']);

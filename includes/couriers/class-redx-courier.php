@@ -9,7 +9,6 @@ if (!defined('ABSPATH')) {
 }
 
 require_once SHIPSYNC_PLUGIN_PATH . 'includes/couriers/abstract-courier.php';
-require_once SHIPSYNC_PLUGIN_PATH . 'includes/couriers/class-redx-api-wrapper.php';
 
 class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
 
@@ -31,7 +30,7 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
      * Check if redx-for-woocommerce plugin is available and show notice if needed
      */
     private function check_plugin_dependency() {
-        if (class_exists('ShipSync_RedX_API_Wrapper') && !ShipSync_RedX_API_Wrapper::is_plugin_active()) {
+        if (!self::is_plugin_active()) {
             // Plugin not active, but we can still work with direct API calls (future implementation)
             add_action('admin_notices', array($this, 'plugin_dependency_notice'));
         }
@@ -41,7 +40,7 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
      * Show admin notice about plugin dependency
      */
     public function plugin_dependency_notice() {
-        if (current_user_can('manage_options') && class_exists('ShipSync_RedX_API_Wrapper') && !ShipSync_RedX_API_Wrapper::is_plugin_active()) {
+        if (current_user_can('manage_options') && !self::is_plugin_active()) {
             echo '<div class="notice notice-info"><p>';
             echo sprintf(
                 __('ShipSync: The RedX for WooCommerce plugin is recommended for better integration. Please install and activate it.', 'shipsync')
@@ -65,7 +64,7 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
         );
 
         // If redx-for-woocommerce plugin is active and configured, use its credentials
-        if (ShipSync_RedX_API_Wrapper::is_plugin_active() && ShipSync_RedX_API_Wrapper::is_configured()) {
+        if (self::is_plugin_active() && self::is_plugin_configured()) {
             $fields['use_plugin_api'] = array(
                 'title' => __('Use RedX for WooCommerce Plugin', 'shipsync'),
                 'type' => 'checkbox',
@@ -120,11 +119,11 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
         // If redx-for-woocommerce plugin is active and configured, use it
         $use_plugin = isset($this->credentials['use_plugin_api']) && $this->credentials['use_plugin_api'] === 'yes';
         if (!$use_plugin) {
-            $use_plugin = ShipSync_RedX_API_Wrapper::is_plugin_active() &&
-                         ShipSync_RedX_API_Wrapper::is_configured();
+            $use_plugin = self::is_plugin_active() &&
+                         self::is_plugin_configured();
         }
 
-        if ($use_plugin && ShipSync_RedX_API_Wrapper::is_plugin_active() && ShipSync_RedX_API_Wrapper::is_configured()) {
+        if ($use_plugin && self::is_plugin_active() && self::is_plugin_configured()) {
             // Merge default params
             $order_params = array_merge(array(
                 'parcel_weight' => isset($this->credentials['default_parcel_weight'])
@@ -133,7 +132,7 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
             ), $params);
 
             // Use the wrapper which uses the plugin's API
-            $result = ShipSync_RedX_API_Wrapper::create_order($order, $order_params);
+            $result = self::create_order_via_plugin($order, $order_params);
 
             if ($result['success']) {
                 // Fire action hooks
@@ -173,18 +172,18 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
         // If redx-for-woocommerce plugin is active and configured, use it
         $use_plugin = isset($this->credentials['use_plugin_api']) && $this->credentials['use_plugin_api'] === 'yes';
         if (!$use_plugin) {
-            $use_plugin = ShipSync_RedX_API_Wrapper::is_plugin_active() &&
-                         ShipSync_RedX_API_Wrapper::is_configured();
+            $use_plugin = self::is_plugin_active() &&
+                         self::is_plugin_configured();
         }
 
-        if ($use_plugin && ShipSync_RedX_API_Wrapper::is_plugin_active() && ShipSync_RedX_API_Wrapper::is_configured()) {
+        if ($use_plugin && self::is_plugin_active() && self::is_plugin_configured()) {
             $default_params = array(
                 'parcel_weight' => isset($this->credentials['default_parcel_weight'])
                     ? intval($this->credentials['default_parcel_weight'])
                     : 1,
             );
 
-            return ShipSync_RedX_API_Wrapper::create_bulk_orders($orders, $default_params);
+            return self::create_bulk_orders_via_plugin($orders, $default_params);
         }
 
         return array(
@@ -211,7 +210,7 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
         if ($type === 'merchant_order_id') {
             $order = wc_get_order($identifier);
             if ($order) {
-                return ShipSync_RedX_API_Wrapper::get_order_status($order);
+                return self::get_order_status_via_plugin($order);
             }
         }
 
@@ -224,7 +223,7 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
             ));
 
             if (!empty($orders)) {
-                return ShipSync_RedX_API_Wrapper::get_order_status($orders[0]);
+                return self::get_order_status_via_plugin($orders[0]);
             }
         }
 
@@ -302,7 +301,7 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
 
         // Update WooCommerce order status based on RedX status
         if ($status) {
-            ShipSync_RedX_API_Wrapper::update_wc_order_status($order, $status);
+            self::update_wc_order_status_via_plugin($order, $status);
         }
 
         do_action('shipsync_redx_status_updated', $order->get_id(), $payload);
@@ -336,7 +335,7 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
      */
     public function validate_credentials() {
         // If plugin is configured and we're using it, validate through plugin
-        if (ShipSync_RedX_API_Wrapper::is_plugin_active() && ShipSync_RedX_API_Wrapper::is_configured()) {
+        if (self::is_plugin_active() && self::is_plugin_configured()) {
             $use_plugin = isset($this->credentials['use_plugin_api']) && $this->credentials['use_plugin_api'] === 'yes';
             if (!$use_plugin) {
                 $use_plugin = true; // Default to using plugin if available
@@ -344,7 +343,7 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
 
             if ($use_plugin) {
                 // Test by checking if API key exists
-                $creds = ShipSync_RedX_API_Wrapper::get_credentials();
+                $creds = self::get_plugin_credentials();
                 if (!empty($creds['api_key']) && $creds['enabled']) {
                     return true;
                 }
@@ -395,6 +394,411 @@ class ShipSync_RedX_Courier extends ShipSync_Abstract_Courier {
 
         // RedX tracking URL format (typically uses tracking_id)
         return 'https://redx.com.bd/track/' . urlencode($tracking_code);
+    }
+
+    /**
+     * ============================================
+     * API WRAPPER METHODS (Merged from class-redx-api-wrapper.php)
+     * ============================================
+     */
+
+    /**
+     * Check if the RedX for WooCommerce plugin is active
+     * @return bool
+     */
+    private static function is_plugin_active() {
+        return class_exists('ShopUP\RedxTrackingForWoocommerce\Init') &&
+               class_exists('ShopUP\RedxTrackingForWoocommerce\Services\RedxOrderActionsService');
+    }
+
+    /**
+     * Check if the plugin is configured (has API credentials and is enabled)
+     * @return bool
+     */
+    private static function is_plugin_configured() {
+        if (!self::is_plugin_active()) {
+            return false;
+        }
+
+        $enabled = get_option('redex_tracking_enabled', 'no');
+        $api_key = get_option('redex_tracking_api_key', '');
+
+        return ($enabled === 'yes' && !empty($api_key));
+    }
+
+    /**
+     * Get API credentials from the plugin's options
+     * @return array Array with 'api_key' and 'enabled' keys
+     */
+    private static function get_plugin_credentials() {
+        if (!self::is_plugin_active()) {
+            return array();
+        }
+
+        return array(
+            'api_key' => get_option('redex_tracking_api_key', ''),
+            'enabled' => get_option('redex_tracking_enabled', 'no') === 'yes'
+        );
+    }
+
+    /**
+     * Get API base URL
+     * @return string API base URL
+     */
+    private static function get_api_url() {
+        return 'https://openapi.redx.com.bd/v1.0.0-beta/wordpress/parcel';
+    }
+
+    /**
+     * Create an order using the RedX plugin's API
+     * @param WC_Order|int $order WooCommerce order object or order ID
+     * @param array $params Additional parameters
+     * @return array Response array with 'success', 'message', and optionally 'tracking_id'
+     */
+    private static function create_order_via_plugin($order, $params = array()) {
+        if (!self::is_plugin_active()) {
+            return array(
+                'success' => false,
+                'message' => __('RedX for WooCommerce plugin is not active', 'shipsync')
+            );
+        }
+
+        if (!self::is_plugin_configured()) {
+            return array(
+                'success' => false,
+                'message' => __('RedX for WooCommerce plugin is not configured. Please set up API credentials and enable tracking.', 'shipsync')
+            );
+        }
+
+        if (is_numeric($order)) {
+            $order = wc_get_order($order);
+        }
+
+        if (!$order || !is_a($order, 'WC_Order')) {
+            return array(
+                'success' => false,
+                'message' => __('Invalid order', 'shipsync')
+            );
+        }
+
+        $order_id = $order->get_id();
+
+        $existing_tracking_id = get_post_meta($order_id, '_redx_tracking_id', true);
+        if (!empty($existing_tracking_id)) {
+            return array(
+                'success' => false,
+                'message' => sprintf(__('Order already has a RedX tracking ID: %s', 'shipsync'), $existing_tracking_id)
+            );
+        }
+
+        $api_key = get_option('redex_tracking_api_key');
+        if (empty($api_key)) {
+            return array(
+                'success' => false,
+                'message' => __('RedX API key is not configured', 'shipsync')
+            );
+        }
+
+        $shipping_phone = $order->get_meta('_shipping_phone');
+        $customer_phone = !empty($shipping_phone) ? $shipping_phone : $order->get_billing_phone();
+
+        $request_data = array(
+            'customer_name' => sanitize_text_field($order->get_billing_first_name() . ' ' . $order->get_billing_last_name()),
+            'customer_phone' => sanitize_text_field($customer_phone),
+            'customer_address' => sanitize_text_field($order->get_billing_address_1() . ' ' . $order->get_billing_address_2()),
+            'merchant_invoice_id' => sanitize_text_field($order->get_order_number()),
+            'cash_collection_amount' => floatval($order->get_total()),
+            'parcel_weight' => isset($params['parcel_weight']) ? intval($params['parcel_weight']) : (intval(get_post_meta($order_id, '_parcel_weight', true)) ?: 1),
+            'instruction' => isset($params['instruction']) ? sanitize_text_field($params['instruction']) : sanitize_text_field($order->get_customer_note()),
+            'value' => floatval($order->get_total()),
+        );
+
+        $api_url = self::get_api_url();
+        $headers = array(
+            'Content-Type' => 'application/json',
+            'API-ACCESS-TOKEN' => 'Bearer ' . $api_key,
+        );
+
+        $response = wp_remote_post(
+            $api_url,
+            array(
+                'headers' => $headers,
+                'body' => wp_json_encode($request_data),
+                'timeout' => 30,
+            )
+        );
+
+        if (is_wp_error($response)) {
+            return array(
+                'success' => false,
+                'message' => __('API request failed: ', 'shipsync') . $response->get_error_message()
+            );
+        }
+
+        $response_code = wp_remote_retrieve_response_code($response);
+        $response_body = wp_remote_retrieve_body($response);
+        $response_data = json_decode($response_body, true);
+
+        if ($response_code < 200 || $response_code >= 300) {
+            $error_message = isset($response_data['message'])
+                ? $response_data['message']
+                : __('API error: ', 'shipsync') . $response_body;
+
+            return array(
+                'success' => false,
+                'message' => $error_message,
+                'response' => $response_data
+            );
+        }
+
+        if (empty($response_data['tracking_id'])) {
+            return array(
+                'success' => false,
+                'message' => __('API response missing tracking ID', 'shipsync'),
+                'response' => $response_data
+            );
+        }
+
+        $tracking_id = $response_data['tracking_id'];
+
+        $order->update_meta_data('_redx_tracking_id', $tracking_id);
+        $order->save();
+
+        update_post_meta($order_id, '_redx_tracking_id', $tracking_id);
+
+        $order->add_order_note(sprintf(
+            __('RedX Parcel Created via Plugin - Tracking ID: %s', 'shipsync'),
+            $tracking_id
+        ));
+
+        return array(
+            'success' => true,
+            'message' => __('Order sent to RedX successfully', 'shipsync'),
+            'tracking_id' => $tracking_id,
+            'response' => $response_data
+        );
+    }
+
+    /**
+     * Create bulk orders via plugin
+     * @param array $orders Array of WooCommerce order objects or IDs
+     * @param array $default_params Default parameters for all orders
+     * @return array Response with status and data
+     */
+    private static function create_bulk_orders_via_plugin($orders, $default_params = array()) {
+        if (!self::is_plugin_active()) {
+            return array(
+                'success' => false,
+                'message' => __('RedX for WooCommerce plugin is not active', 'shipsync')
+            );
+        }
+
+        if (!self::is_plugin_configured()) {
+            return array(
+                'success' => false,
+                'message' => __('RedX for WooCommerce plugin is not configured', 'shipsync')
+            );
+        }
+
+        $api_key = get_option('redex_tracking_api_key');
+        if (empty($api_key)) {
+            return array(
+                'success' => false,
+                'message' => __('RedX API key is not configured', 'shipsync')
+            );
+        }
+
+        $api_url = self::get_api_url();
+        $headers = array(
+            'Content-Type' => 'application/json',
+            'API-ACCESS-TOKEN' => 'Bearer ' . $api_key,
+        );
+
+        $success_count = 0;
+        $failure_count = 0;
+        $results = array();
+
+        foreach ($orders as $order) {
+            if (is_numeric($order)) {
+                $order = wc_get_order($order);
+            }
+
+            if (!$order || !is_a($order, 'WC_Order')) {
+                $failure_count++;
+                continue;
+            }
+
+            $order_id = $order->get_id();
+
+            $existing_tracking_id = get_post_meta($order_id, '_redx_tracking_id', true);
+            if (!empty($existing_tracking_id)) {
+                continue;
+            }
+
+            $shipping_phone = $order->get_meta('_shipping_phone');
+            $customer_phone = !empty($shipping_phone) ? $shipping_phone : $order->get_billing_phone();
+
+            $request_data = array(
+                'customer_name' => sanitize_text_field($order->get_billing_first_name() . ' ' . $order->get_billing_last_name()),
+                'customer_phone' => sanitize_text_field($customer_phone),
+                'customer_address' => sanitize_text_field($order->get_billing_address_1() . ' ' . $order->get_billing_address_2()),
+                'merchant_invoice_id' => sanitize_text_field($order->get_order_number()),
+                'cash_collection_amount' => floatval($order->get_total()),
+                'parcel_weight' => isset($default_params['parcel_weight'])
+                    ? intval($default_params['parcel_weight'])
+                    : (intval(get_post_meta($order_id, '_parcel_weight', true)) ?: 1),
+                'instruction' => isset($default_params['instruction'])
+                    ? sanitize_text_field($default_params['instruction'])
+                    : sanitize_text_field($order->get_customer_note()),
+                'value' => floatval($order->get_total()),
+            );
+
+            $response = wp_remote_post(
+                $api_url,
+                array(
+                    'headers' => $headers,
+                    'body' => wp_json_encode($request_data),
+                    'timeout' => 30,
+                )
+            );
+
+            if (is_wp_error($response)) {
+                $failure_count++;
+                $results[] = array(
+                    'order_id' => $order_id,
+                    'success' => false,
+                    'message' => $response->get_error_message()
+                );
+                continue;
+            }
+
+            $response_code = wp_remote_retrieve_response_code($response);
+            $response_body = wp_remote_retrieve_body($response);
+            $response_data = json_decode($response_body, true);
+
+            if ($response_code >= 200 && $response_code < 300 && !empty($response_data['tracking_id'])) {
+                $tracking_id = $response_data['tracking_id'];
+
+                $order->update_meta_data('_redx_tracking_id', $tracking_id);
+                $order->save();
+                update_post_meta($order_id, '_redx_tracking_id', $tracking_id);
+
+                $order->add_order_note(sprintf(
+                    __('RedX Parcel Created via Plugin - Tracking ID: %s', 'shipsync'),
+                    $tracking_id
+                ));
+
+                $success_count++;
+                $results[] = array(
+                    'order_id' => $order_id,
+                    'success' => true,
+                    'tracking_id' => $tracking_id
+                );
+            } else {
+                $failure_count++;
+                $error_message = isset($response_data['message'])
+                    ? $response_data['message']
+                    : __('API error', 'shipsync');
+                $results[] = array(
+                    'order_id' => $order_id,
+                    'success' => false,
+                    'message' => $error_message
+                );
+            }
+        }
+
+        return array(
+            'success' => $failure_count === 0,
+            'message' => sprintf(
+                __('Bulk orders processed: %d successful, %d failed', 'shipsync'),
+                $success_count,
+                $failure_count
+            ),
+            'success_count' => $success_count,
+            'failure_count' => $failure_count,
+            'results' => $results
+        );
+    }
+
+    /**
+     * Get order status from order meta via plugin
+     * @param WC_Order|int $order WooCommerce order object or order ID
+     * @return array Status data
+     */
+    private static function get_order_status_via_plugin($order) {
+        if (is_numeric($order)) {
+            $order = wc_get_order($order);
+        }
+
+        if (!$order || !is_a($order, 'WC_Order')) {
+            return array(
+                'success' => false,
+                'message' => __('Invalid order', 'shipsync')
+            );
+        }
+
+        $tracking_id = $order->get_meta('_redx_tracking_id');
+        if (empty($tracking_id)) {
+            $tracking_id = get_post_meta($order->get_id(), '_redx_tracking_id', true);
+        }
+
+        if (empty($tracking_id)) {
+            return array(
+                'success' => false,
+                'message' => __('No tracking ID found for this order', 'shipsync')
+            );
+        }
+
+        return array(
+            'success' => true,
+            'tracking_id' => $tracking_id,
+            'status' => 'pending'
+        );
+    }
+
+    /**
+     * Update WooCommerce order status based on RedX status
+     * @param WC_Order $order WooCommerce order object
+     * @param string $redx_status RedX order status
+     * @return void
+     */
+    private static function update_wc_order_status_via_plugin($order, $redx_status) {
+        if (!$order || !is_a($order, 'WC_Order')) {
+            return;
+        }
+
+        $status_map = array(
+            'delivered' => 'completed',
+            'Delivered' => 'completed',
+            'completed' => 'completed',
+            'completed_delivery' => 'completed',
+            'returned' => 'refunded',
+            'Returned' => 'refunded',
+            'cancelled' => 'cancelled',
+            'Cancelled' => 'cancelled',
+            'pending' => 'processing',
+            'Pending' => 'processing',
+            'in_transit' => 'out-shipping',
+            'In Transit' => 'out-shipping',
+            'on_hold' => 'on-hold',
+            'On Hold' => 'on-hold',
+        );
+
+        $default_status = 'processing';
+        $wc_status = isset($status_map[strtolower($redx_status)])
+            ? $status_map[strtolower($redx_status)]
+            : $default_status;
+
+        $current_status = $order->get_status();
+        if ($current_status !== $wc_status) {
+            $order->update_status($wc_status, sprintf(
+                __('RedX delivery status updated to: %s', 'shipsync'),
+                ucwords(str_replace(array('_', '-'), ' ', $redx_status))
+            ));
+        }
+
+        $order->update_meta_data('_redx_status', $redx_status);
+        $order->save();
     }
 }
 

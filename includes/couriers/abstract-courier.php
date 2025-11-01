@@ -51,7 +51,7 @@ abstract class ShipSync_Abstract_Courier {
      * Load API credentials from settings
      */
     protected function load_credentials() {
-        $settings = get_option('ocm_courier_settings', array());
+        $settings = get_option(ShipSync_Options::COURIER_SETTINGS, array());
 
         if (isset($settings[$this->courier_id])) {
             $this->credentials = $settings[$this->courier_id];

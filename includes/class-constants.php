@@ -118,6 +118,20 @@ class ShipSync_Transients {
 }
 
 /**
+ * Option names (for consistency and to prevent hardcoded strings)
+ */
+class ShipSync_Options {
+    const COURIER_SETTINGS = 'ocm_courier_settings';
+    const SETTINGS = 'ocm_settings';
+    const VERSION = 'ocm_version';
+    const ENABLE_COURIER_LOGS = 'ocm_enable_courier_logs';
+    const ENABLE_WEBHOOK_LOGS = 'ocm_enable_webhook_logs';
+    const WEBHOOK_AUTH_ENABLED = 'ocm_webhook_auth_enabled';
+    const WEBHOOK_AUTH_TOKEN = 'ocm_webhook_auth_token';
+    const WEBHOOK_AUTH_METHOD = 'ocm_webhook_auth_method';
+}
+
+/**
  * Default values
  */
 class ShipSync_Defaults {
@@ -125,5 +139,7 @@ class ShipSync_Defaults {
     const COURIER_ORDERS_PER_PAGE = 10;
     const DEFAULT_DELIVERY_CHARGE = 150;
     const CACHE_EXPIRATION = HOUR_IN_SECONDS;
+    const RATE_LIMIT_WINDOW = 60; // seconds
+    const RATE_LIMIT_MAX_REQUESTS = 10; // max requests per window
 }
 

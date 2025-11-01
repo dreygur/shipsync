@@ -32,7 +32,7 @@ class ShipSync_Notifications {
      */
     public function send_status_update_email($order_id, $new_status, $old_status, $notes) {
         // Check if notifications are enabled
-        $settings = get_option('ocm_settings', array());
+        $settings = get_option(ShipSync_Options::SETTINGS, array());
         if (empty($settings['enable_notifications'])) {
             return;
         }
@@ -93,7 +93,7 @@ class ShipSync_Notifications {
      */
     public function send_order_created_email($order_id, $order_data) {
         // Check if notifications are enabled
-        $settings = get_option('ocm_settings', array());
+        $settings = get_option(ShipSync_Options::SETTINGS, array());
         if (empty($settings['enable_notifications'])) {
             return;
         }
@@ -145,7 +145,7 @@ class ShipSync_Notifications {
      */
     public function send_courier_assigned_email($order_id, $courier_id) {
         // Check if notifications are enabled
-        $settings = get_option('ocm_settings', array());
+        $settings = get_option(ShipSync_Options::SETTINGS, array());
         if (empty($settings['enable_notifications'])) {
             return;
         }

@@ -86,6 +86,15 @@ class ShipSync_Plugin
 
         // Load core classes
         require_once $includes_path . 'class-database.php';
+
+        // Load core utilities and base classes
+        require_once $includes_path . 'core/class-helper.php';
+
+        // Load services
+        require_once $includes_path . 'services/class-order-service.php';
+        require_once $includes_path . 'services/class-courier-service.php';
+
+        // Load feature classes
         require_once $includes_path . 'class-woocommerce.php';
         require_once $includes_path . 'class-courier-manager.php';
         require_once $includes_path . 'class-courier-webhook.php';
@@ -99,17 +108,12 @@ class ShipSync_Plugin
             require_once $includes_path . 'class-admin.php';
         }
 
-        // Load bundled Pathao Courier plugin FIRST (if not already installed separately)
-        // This makes the plugin functions available for the wrapper
-        require_once $includes_path . 'integrations/pathao-loader.php';
+        // Pathao plugin loader is now integrated into class-courier-manager.php
 
-        // Load courier abstract class and API wrappers
+        // Load courier abstract class and courier implementations
         require_once $includes_path . 'couriers/abstract-courier.php';
-        require_once $includes_path . 'couriers/class-steadfast-api-wrapper.php';
         require_once $includes_path . 'couriers/class-steadfast-courier.php';
-        require_once $includes_path . 'couriers/class-pathao-api-wrapper.php';
         require_once $includes_path . 'couriers/class-pathao-courier.php';
-        require_once $includes_path . 'couriers/class-redx-api-wrapper.php';
         require_once $includes_path . 'couriers/class-redx-courier.php';
     }
 
@@ -235,8 +239,8 @@ class ShipSync_Plugin
             }
 
             // Set default options
-            add_option("ocm_version", SHIPSYNC_VERSION);
-            add_option("ocm_settings", [
+            add_option(ShipSync_Options::VERSION, SHIPSYNC_VERSION);
+            add_option(ShipSync_Options::SETTINGS, [
                 "orders_per_page" => ShipSync_Defaults::ORDERS_PER_PAGE,
                 "enable_notifications" => true,
                 "show_courier_on_order_email" => true,

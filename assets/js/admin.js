@@ -182,44 +182,99 @@ jQuery(document).ready(function ($) {
     }, 5000);
   }
 
-  // Auto-refresh orders every 30 seconds
+  // Auto-refresh orders every 60 seconds (only if user is inactive and no modals)
+  // This is less disruptive than 30 seconds
   if ($('.ocm-orders-container').length > 0) {
+    var lastUserActivity = Date.now();
+    var refreshInterval = 60000; // 60 seconds
+
+    // Track user activity
+    $(document).on('mousemove keypress scroll click', function() {
+      lastUserActivity = Date.now();
+    });
+
     setInterval(function () {
-      // Only refresh if no modals are open
-      if ($('.ocm-modal:visible').length === 0) {
+      // Only refresh if:
+      // 1. No modals are open
+      // 2. User has been inactive for at least 30 seconds
+      // 3. Page has been visible for at least 60 seconds
+      var timeSinceActivity = Date.now() - lastUserActivity;
+      var isPageVisible = !document.hidden;
+
+      if ($('.ocm-modal:visible').length === 0 &&
+          timeSinceActivity > 30000 &&
+          isPageVisible) {
         location.reload();
       }
-    }, 30000);
+    }, refreshInterval);
+
+    // Add manual refresh button
+    if ($('.ocm-auto-refresh-toggle').length === 0) {
+      var $refreshBtn = $('<button>', {
+        class: 'button ocm-auto-refresh-toggle',
+        style: 'margin-left: 10px;',
+        html: '<span class="dashicons dashicons-update" style="font-size: 16px; vertical-align: middle;"></span> ' +
+              '<span class="ocm-refresh-text">' + (typeof shipsyncAjax !== 'undefined' && shipsyncAjax.strings && shipsyncAjax.strings.refresh ? shipsyncAjax.strings.refresh : 'Refresh') + '</span>'
+      }).on('click', function() {
+        var $btn = $(this);
+        $btn.find('.dashicons').addClass('ocm-spinning');
+        setTimeout(function() {
+          location.reload();
+        }, 500);
+      });
+      $('.page-title-action').after($refreshBtn);
+    }
   }
 
-  // Form validation
+  // Form validation with better UX
   $('.ocm-form').on('submit', function (e) {
     const $form = $(this);
     let isValid = true;
+    let firstError = null;
+
+    // Remove previous error messages
+    $form.find('.ocm-field-error').remove();
 
     // Check required fields
     $form.find('input[required], select[required], textarea[required]').each(function () {
-      if (!$(this).val().trim()) {
-        $(this).addClass('error');
+      const $field = $(this);
+      if (!$field.val().trim()) {
+        $field.addClass('error');
+        if (!firstError) firstError = $field;
         isValid = false;
+
+        // Add inline error message
+        const fieldLabel = $field.closest('.ocm-form-group').find('label').text() || $field.attr('placeholder') || 'This field';
+        $field.after('<span class="ocm-field-error" style="color: #d63638; font-size: 12px; display: block; margin-top: 5px;"><span class="dashicons dashicons-warning" style="font-size: 14px; vertical-align: middle;"></span> ' + fieldLabel.replace('*', '').trim() + ' is required.</span>');
       } else {
-        $(this).removeClass('error');
+        $field.removeClass('error');
       }
     });
 
     // Check email format
     $form.find('input[type="email"]').each(function () {
-      const email = $(this).val();
+      const $field = $(this);
+      const email = $field.val();
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (email && !emailRegex.test(email)) {
-        $(this).addClass('error');
+        $field.addClass('error');
+        if (!firstError) firstError = $field;
         isValid = false;
+        $field.after('<span class="ocm-field-error" style="color: #d63638; font-size: 12px; display: block; margin-top: 5px;"><span class="dashicons dashicons-warning" style="font-size: 14px; vertical-align: middle;"></span> Please enter a valid email address.</span>');
       }
     });
 
     if (!isValid) {
       e.preventDefault();
-      showMessage('Please fill in all required fields correctly.', 'error');
+      showMessage('Please correct the errors below and try again.', 'error');
+
+      // Scroll to first error
+      if (firstError) {
+        $('html, body').animate({
+          scrollTop: firstError.offset().top - 100
+        }, 500);
+        firstError.focus();
+      }
     }
   });
 

@@ -110,11 +110,11 @@ class ShipSync_Database {
     }
 
     public function check_version() {
-        $installed_version = get_option('ocm_version');
+        $installed_version = get_option(ShipSync_Options::VERSION);
 
         if ($installed_version != SHIPSYNC_VERSION) {
             $this->create_tables();
-            update_option('ocm_version', SHIPSYNC_VERSION);
+            update_option(ShipSync_Options::VERSION, SHIPSYNC_VERSION);
         }
     }
 
