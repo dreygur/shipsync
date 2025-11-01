@@ -1396,7 +1396,6 @@ class ShipSync_Admin
         ?>
         <div class="wrap shipsync-settings-wrap">
             <h1 class="shipsync-page-title">
-                <span class="dashicons dashicons-admin-settings" style="margin-right: 8px; color: #2271b1;"></span>
                 <?php _e('Courier Integration Settings', 'shipsync'); ?>
             </h1>
             <p class="description" style="margin-bottom: 20px; color: #646970;">
@@ -1512,7 +1511,6 @@ class ShipSync_Admin
                         <tr>
                             <th scope="row">
                                 <label for="webhook_auth_enabled">
-                                    <span class="dashicons dashicons-lock" style="color: #646970; margin-right: 5px; vertical-align: middle;"></span>
                                     <?php _e('Enable Webhook Authentication', 'shipsync'); ?>
                                 </label>
                             </th>
@@ -1564,7 +1562,6 @@ class ShipSync_Admin
                         <tr>
                             <th scope="row">
                                 <label for="webhook_auth_method">
-                                    <span class="dashicons dashicons-admin-settings" style="color: #646970; margin-right: 5px; vertical-align: middle;"></span>
                                     <?php _e('Authentication Method', 'shipsync'); ?>
                                 </label>
                             </th>
@@ -1819,7 +1816,6 @@ class ShipSync_Admin
                             id="shipsync-save-settings-btn"
                             class="button button-primary button-large"
                             aria-label="<?php esc_attr_e('Save all courier integration settings', 'shipsync'); ?>">
-                        <span class="dashicons dashicons-yes-alt" style="margin-right: 5px; vertical-align: middle;"></span>
                         <span class="shipsync-save-text"><?php _e('Save Settings', 'shipsync'); ?></span>
                     </button>
                     <span class="description" style="margin-left: 15px; color: #646970;">
@@ -2084,7 +2080,6 @@ class ShipSync_Admin
 
         <div class="wrap shipsync-settings-wrap">
             <h1 class="shipsync-page-title">
-                <span class="dashicons dashicons-admin-generic" style="margin-right: 8px; color: #2271b1;"></span>
                 <?php _e('ShipSync Settings', 'shipsync'); ?>
             </h1>
             <p class="description" style="margin-bottom: 25px; color: #646970;">
@@ -2096,10 +2091,7 @@ class ShipSync_Admin
 
                 <div class="shipsync-settings-section">
                     <div class="shipsync-section-header">
-                        <h2>
-                            <span class="dashicons dashicons-admin-settings" style="color: #2271b1; margin-right: 8px; vertical-align: middle;"></span>
-                            <?php _e('General Settings', 'shipsync'); ?>
-                        </h2>
+                        <h2><?php _e('General Settings', 'shipsync'); ?></h2>
                         <p class="description"><?php _e('Configure basic plugin behavior and defaults.', 'shipsync'); ?></p>
                     </div>
 
@@ -2107,7 +2099,6 @@ class ShipSync_Admin
                         <tr>
                             <th scope="row">
                                 <label for="orders_per_page">
-                                    <span class="dashicons dashicons-list-view" style="color: #646970; margin-right: 5px; vertical-align: middle;"></span>
                                     <?php _e('Orders per page', 'shipsync'); ?>
                                 </label>
                             </th>
@@ -2128,7 +2119,6 @@ class ShipSync_Admin
                         <tr>
                             <th scope="row">
                                 <label for="default_order_status">
-                                    <span class="dashicons dashicons-flag" style="color: #646970; margin-right: 5px; vertical-align: middle;"></span>
                                     <?php _e('Default order status', 'shipsync'); ?>
                                 </label>
                             </th>
@@ -2147,7 +2137,6 @@ class ShipSync_Admin
 
                         <tr>
                             <th scope="row">
-                                <span class="dashicons dashicons-email-alt" style="color: #646970; margin-right: 5px; vertical-align: middle;"></span>
                                 <?php _e('Email notifications', 'shipsync'); ?>
                             </th>
                             <td>
@@ -2168,10 +2157,7 @@ class ShipSync_Admin
 
                 <div class="shipsync-settings-section">
                     <div class="shipsync-section-header">
-                        <h2>
-                            <span class="dashicons dashicons-admin-widgets" style="color: #2271b1; margin-right: 8px; vertical-align: middle;"></span>
-                            <?php _e('Widget Settings', 'shipsync'); ?>
-                        </h2>
+                        <h2><?php _e('Widget Settings', 'shipsync'); ?></h2>
                         <p class="description"><?php _e('Customize the appearance and behavior of the order card widget on the frontend.', 'shipsync'); ?></p>
                     </div>
 
@@ -2179,7 +2165,6 @@ class ShipSync_Admin
                         <tr>
                             <th scope="row">
                                 <label for="widget_title">
-                                    <span class="dashicons dashicons-edit" style="color: #646970; margin-right: 5px; vertical-align: middle;"></span>
                                     <?php _e('Widget title', 'shipsync'); ?>
                                 </label>
                             </th>
@@ -2198,8 +2183,7 @@ class ShipSync_Admin
                         <tr>
                             <th scope="row">
                                 <label for="widget_orders_limit">
-                                    <span class="dashicons dashicons-admin-post" style="color: #646970; margin-right: 5px; vertical-align: middle;"></span>
-                                    <?php _e('Number of orders to display', 'shipsync'); ?>
+                                    <?php _e('Orders to display', 'shipsync'); ?>
                                 </label>
                             </th>
                             <td>
@@ -2218,7 +2202,6 @@ class ShipSync_Admin
 
                         <tr>
                             <th scope="row">
-                                <span class="dashicons dashicons-visibility" style="color: #646970; margin-right: 5px; vertical-align: middle;"></span>
                                 <?php _e('Display options', 'shipsync'); ?>
                             </th>
                             <td>
@@ -2253,7 +2236,6 @@ class ShipSync_Admin
 
                 <div class="shipsync-save-actions">
                     <button type="submit" name="save_settings" class="button button-primary button-large">
-                        <span class="dashicons dashicons-yes-alt" style="margin-right: 5px; vertical-align: middle;"></span>
                         <?php _e('Save Settings', 'shipsync'); ?>
                     </button>
                     <span class="description" style="margin-left: 15px; color: #646970;">
