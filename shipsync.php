@@ -3,7 +3,7 @@
  * Plugin Name: ShipSync
  * Plugin URI: https://wordpress.org/plugins/shipsync
  * Description: Bangladesh courier integration for WooCommerce. Track deliveries with Steadfast, Pathao, RedX and other local courier services.
- * Version: 2.0.0
+ * Version: 2.1.0
  * Author: Rakibul Yeasin
  * Author URI: https://profiles.wordpress.org/rakibulyeasin/
  * License: GPL v2 or later
@@ -32,7 +32,7 @@ if (file_exists($autoload_file)) {
 // Define plugin constants
 define("SHIPSYNC_PLUGIN_URL", plugin_dir_url(__FILE__));
 define("SHIPSYNC_PLUGIN_PATH", plugin_dir_path(__FILE__));
-define("SHIPSYNC_VERSION", "2.0.0");
+define("SHIPSYNC_VERSION", "2.1.0");
 
 // Legacy constants for backwards compatibility
 if (!defined("SHIPSYNC_PLUGIN_URL")) {
